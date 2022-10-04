@@ -1,12 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-from datetime import date
 import sys
 
 if __name__ == '__main__':
-    # Список работников.
-    workers = []
+    # Список .
+    airport = []
 
     # Организовать бесконечный цикл запроса команд.
     while True:
@@ -16,24 +12,25 @@ if __name__ == '__main__':
         # Выполнить действие в соответствие с командой.
         if command == 'exit':
             break
+
         elif command == 'add':
-            # Запросить данные о работнике.
-            name = input("Фамилия и инициалы? ")
-            post = input("Должность? ")
-            year = int(input("Год поступления? "))
+            # Запросить данные .
+            race = input("Название пункта назначения рейса ")
+            number = input("Номер рейса ")
+            type = float(input("Тип самолёта "))
 
             # Создать словарь.
-            worker = {
-                'name': name,
-                'post': post,
-                'year': year,
+            airports = {
+                'race': race,
+                'number': number,
+                'type': type,
             }
 
             # Добавить словарь в список.
-            workers.append(worker)
+            airport.append(airports)
             # Отсортировать список в случае необходимости.
-            if len(workers) > 1:
-                workers.sort(key=lambda item: item.get('name', ''))
+            if len(airport) > 1:
+                airport.sort(key=lambda item: item.get('race', ''))
 
         elif command == 'list':
             # Заголовок таблицы.
@@ -41,65 +38,58 @@ if __name__ == '__main__':
                 '-' * 4,
                 '-' * 30,
                 '-' * 20,
-                '-' * 8
+                '-' * 20
             )
             print(line)
             print(
-                '| {:^4} | {:^30} | {:^20} | {:^8} |'.format(
-                    "№",
-                    "Ф.И.О.",
-                    "Должность",
-                    "Год"
+                '| {:^4} | {:^30} | {:^20} | {:^20} |'.format(
+                    "No",
+                    "Пункт",
+                    "Номер",
+                    "Тип самолёта."
                 )
             )
             print(line)
 
-            # Вывести данные о всех сотрудниках.
-            for idx, worker in enumerate(workers, 1):
+            # Вывести данные о всех рейсах.
+            for idx, airports in enumerate(airport, 1):
                 print(
-                    '| {:>4} | {:<30} | {:<20} | {:>8} |'.format(
+                    '| {:>4} | {:<30} | {:<20} | {:>20} |'.format(
                         idx,
-                        worker.get('name', ''),
-                        worker.get('post', ''),
-                        worker.get('year', 0)
+                        airports.get('race', ''),
+                        airports.get('number', ''),
+                        airports.get('type', 0)
                     )
                 )
 
             print(line)
 
         elif command.startswith('select '):
-            # Получить текущую дату.
-            today = date.today()
-
-            # Разбить команду на части для выделения номера года.
             parts = command.split(' ', maxsplit=2)
-            # Получить требуемый стаж.
-            period = int(parts[1])
+            sel = (parts[1])
 
-            # Инициализировать счетчик.
             count = 0
-            # Проверить сведения работников из списка.
-            for worker in workers:
-                if today.year - worker.get('year', today.year) >= period:
+            for airports in airport:
+                if airports.get('race') == sel:
                     count += 1
                     print(
-                        '{:>4}: {}'.format(count, worker.get('name', ''))
+                        '{:>4}: {}'.format(count, airports.get('race', ''))
                     )
+                    print('Номер рейса:', airports.get('number', ''))
+                    print('Тип самолёта:', airports.get('type', ''))
 
-            # Если счетчик равен 0, то работники не найдены.
+            # Если счетчик равен 0, то рейсы не найдены.
             if count == 0:
-                print("Работники с заданным стажем не найдены.")
+                print("Рейс не найден.")
 
         elif command == 'help':
             # Вывести справку о работе с программой.
             print("Список команд:\n")
-            print("add - добавить работника;")
-            print("list - вывести список работников;")
-            print("select <стаж> - запросить работников со стажем;")
+            print("add - добавить рейс;")
+            print("list - вывести список рейсов;")
+            print("select <товар> - информация о рейсе;")
             print("help - отобразить справку;")
             print("exit - завершить работу с программой.")
+
         else:
-            print(f"Неизвестная команда {command}", file=sys.stderr)a
-
-
-
+            print("Неизвестная команда {command}", file=sys.stderr)
